@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:cui="Timberborn.CoreUI" xmlns:tds="Timberborn.DropdownSystem" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="/Assets/Resources/UI/Views/Core/CoreStyle.uss" />
+    <Style src="/Assets/Resources/UI/Views/Common/CommonStyle.uss" />
+    <Style src="/Assets/Resources/UI/Views/Game/GameStyle.uss" />
+    <Style src="/Assets/Resources/UI/Views/Game/BatchControl/BatchControlStyle.uss" />
+    <ui:VisualElement name="NaturalResourcesStatisticsHeader" class="batch-control-box__middle-row" style="padding: 10px 20px; height: 50px; flex-direction: row; justify-content: space-between; align-items: center;">
+        <ui:Label name="FilterLabel" text="" class="game-text-normal" style="margin-right: 5px;" />
+        <tds:Dropdown name="FilterDropdown" class="batch-control-box__time-range-dropdown" style="width: 150px;" />
+    </ui:VisualElement>
+</ui:UXML>

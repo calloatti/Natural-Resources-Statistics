@@ -1,0 +1,9 @@
+{
+  "Name": "Natural Resources Statistics",
+  "Version": "1.0.0",
+  "Id": "Calloatti.NaturalResourcesStatistics",
+  "MinimumGameVersion": "1.1.2.4",
+  "Description": "Adds a Natural Resources Statistics tab to the batch control panel showing all planted trees, bushes, and crops grouped by species with health/planting breakdown.",
+  "RequiredMods": [],
+  "OptionalMods": []
+}

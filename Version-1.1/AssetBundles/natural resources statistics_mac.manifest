@@ -1,0 +1,41 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.5.5f1
+CRC: 813535047
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: d02a660abac7c1b4d598e9ca27e5a99e
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9bc83729e0832e3f6e723ca2461aff2d
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: e2f01fb7692b03151c139d3d3a8d9ace
+HashAppended: 0
+ClassTypes:
+- Class: 114
+  Script: {fileID: 11998, guid: 0000000000000000e000000000000000, type: 0}
+- Class: 114
+  Script: {fileID: 11995, guid: 0000000000000000e000000000000000, type: 0}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Timberborn.DropdownSystem
+  ClassName: Timberborn.DropdownSystem.Dropdown/UxmlSerializedData
+- AssemblyName: UnityEngine.UIElementsModule
+  ClassName: UnityEngine.UIElements.Label/UxmlSerializedData
+- AssemblyName: UnityEngine.UIElementsModule
+  ClassName: UnityEngine.UIElements.StyleProperty
+- AssemblyName: UnityEngine.UIElementsModule
+  ClassName: UnityEngine.UIElements.StyleRule
+- AssemblyName: UnityEngine.UIElementsModule
+  ClassName: UnityEngine.UIElements.StyleSheets.Dimension
+- AssemblyName: UnityEngine.UIElementsModule
+  ClassName: UnityEngine.UIElements.StyleValueHandle
+- AssemblyName: UnityEngine.UIElementsModule
+  ClassName: UnityEngine.UIElements.VisualElement/UxmlSerializedData
+- AssemblyName: UnityEngine.UIElementsModule
+  ClassName: UnityEngine.UIElements.VisualElementAsset
+Assets:
+- Assets/Mods/Natural Resources Statistics/AssetBundles/Resources/UI/Views/NaturalResourcesStatistics/NaturalResourcesStatisticsHeader.uxml
+Dependencies: []

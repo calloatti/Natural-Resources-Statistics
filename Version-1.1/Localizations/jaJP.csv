@@ -1,0 +1,13 @@
+ID,Text,Comment
+Calloatti.NRS.Column.Dead,枯死,
+Calloatti.NRS.Column.Dying,枯死中,
+Calloatti.NRS.Column.Healthy,健康,
+Calloatti.NRS.Column.Mature,成熟,
+Calloatti.NRS.Filter,フィルター:,
+Calloatti.NRS.Filter.All,すべて,
+Calloatti.NRS.Filter.Planted,植栽,
+Calloatti.NRS.Filter.Wild,自生,
+Calloatti.NRS.Header,種類,
+Calloatti.NRS.KeyBind,天然資源統計を開く,
+Calloatti.NRS.Tab,天然資源統計,
+KeyBindingGroup.Calloatti.NRS,天然資源統計,

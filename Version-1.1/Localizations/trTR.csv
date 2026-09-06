@@ -1,0 +1,13 @@
+ID,Text,Comment
+Calloatti.NRS.Column.Dead,Ölü,
+Calloatti.NRS.Column.Dying,Ölüyor,
+Calloatti.NRS.Column.Healthy,Sağlıklı,
+Calloatti.NRS.Column.Mature,Olgun,
+Calloatti.NRS.Filter,Filtre:,
+Calloatti.NRS.Filter.All,Tümü,
+Calloatti.NRS.Filter.Planted,Dikili,
+Calloatti.NRS.Filter.Wild,Yabani,
+Calloatti.NRS.Header,Tür,
+Calloatti.NRS.KeyBind,Doğal Kaynak İstatistiklerini Aç,
+Calloatti.NRS.Tab,Doğal Kaynak İstatistikleri,
+KeyBindingGroup.Calloatti.NRS,Doğal Kaynak İstatistikleri,

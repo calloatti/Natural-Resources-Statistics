@@ -1,0 +1,13 @@
+ID,Text,Comment
+Calloatti.NRS.Column.Dead,Tod,
+Calloatti.NRS.Column.Dying,Sterbend,
+Calloatti.NRS.Column.Healthy,Gesund,
+Calloatti.NRS.Column.Mature,Ausgewachsen,
+Calloatti.NRS.Filter,Filter:,
+Calloatti.NRS.Filter.All,Alle,
+Calloatti.NRS.Filter.Planted,Gepflanzt,
+Calloatti.NRS.Filter.Wild,Wild,
+Calloatti.NRS.Header,Art,
+Calloatti.NRS.KeyBind,Natürliche Ressourcen Statistik öffnen,
+Calloatti.NRS.Tab,Natürliche Ressourcen Statistik,
+KeyBindingGroup.Calloatti.NRS,Natürliche Ressourcen Statistik,

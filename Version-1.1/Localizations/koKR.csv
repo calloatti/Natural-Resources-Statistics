@@ -1,0 +1,13 @@
+ID,Text,Comment
+Calloatti.NRS.Column.Dead,죽음,
+Calloatti.NRS.Column.Dying,죽어가는,
+Calloatti.NRS.Column.Healthy,건강,
+Calloatti.NRS.Column.Mature,성숙,
+Calloatti.NRS.Filter,필터:,
+Calloatti.NRS.Filter.All,전체,
+Calloatti.NRS.Filter.Planted,심은 것,
+Calloatti.NRS.Filter.Wild,자생,
+Calloatti.NRS.Header,종,
+Calloatti.NRS.KeyBind,자연 자원 통계 열기,
+Calloatti.NRS.Tab,자연 자원 통계,
+KeyBindingGroup.Calloatti.NRS,자연 자원 통계,

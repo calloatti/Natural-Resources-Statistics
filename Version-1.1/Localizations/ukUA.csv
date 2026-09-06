@@ -1,0 +1,13 @@
+ID,Text,Comment
+Calloatti.NRS.Column.Dead,Мертвий,
+Calloatti.NRS.Column.Dying,Померючий,
+Calloatti.NRS.Column.Healthy,Здоровий,
+Calloatti.NRS.Column.Mature,Зрілий,
+Calloatti.NRS.Filter,Фільтр:,
+Calloatti.NRS.Filter.All,Усі,
+Calloatti.NRS.Filter.Planted,Посажені,
+Calloatti.NRS.Filter.Wild,Дикі,
+Calloatti.NRS.Header,Вид,
+Calloatti.NRS.KeyBind,Відкрити статистику природних ресурсів,
+Calloatti.NRS.Tab,Статистика природних ресурсів,
+KeyBindingGroup.Calloatti.NRS,Статистика природних ресурсів,

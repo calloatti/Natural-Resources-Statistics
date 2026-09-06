@@ -1,0 +1,5 @@
+1.0.0
+- Initial release
+- Natural Resources Statistics tab in batch control panel
+- Filter by: All, Healthy, Dying, Dead, Mature, Planted, Wild
+- Sort by: Name A-Z, Name Z-A, Count (Most), Count (Least)

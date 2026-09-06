@@ -1,0 +1,13 @@
+ID,Text,Comment
+Calloatti.NRS.Column.Dead,ตาย,
+Calloatti.NRS.Column.Dying,กำลังตาย,
+Calloatti.NRS.Column.Healthy,แข็งแรง,
+Calloatti.NRS.Column.Mature,โตเต็มที่,
+Calloatti.NRS.Filter,ตัวกรอง:,
+Calloatti.NRS.Filter.All,ทั้งหมด,
+Calloatti.NRS.Filter.Planted,ปลูก,
+Calloatti.NRS.Filter.Wild,ป่า,
+Calloatti.NRS.Header,สปีशीส์,
+Calloatti.NRS.KeyBind,เปิดสถิติทรัพยากรธรรมชาติ,
+Calloatti.NRS.Tab,สถิติทรัพยากรธรรมชาติ,
+KeyBindingGroup.Calloatti.NRS,สถิติทรัพยากรธรรมชาติ,

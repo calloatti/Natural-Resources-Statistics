@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>naturalresourcesstatistics</AssemblyName>
+    <RootNamespace>Calloatti.NaturalResourcesStatistics</RootNamespace>
+    <TimberbornPath>C:\Program Files (x86)\Steam\steamapps\common\timberborn_public\Timberborn_Data\Managed</TimberbornPath>
+  </PropertyGroup>
+
+  <Import Project="CommonModSettings.props" />
+
+  <ItemGroup>
+    <Publicize Include="Timberborn.NaturalResources" />
+    <Publicize Include="Timberborn.NaturalResourcesLifecycle" />
+    <Publicize Include="Timberborn.Growing" />
+    <Publicize Include="Timberborn.Yielding" />
+    <Publicize Include="Timberborn.TerrainSystem" />
+    <Publicize Include="Timberborn.DropdownSystem" />
+    <DoNotPublicize Include="Assembly:Timberborn.DropdownSystem Timberborn.DropdownSystem.Dropdown.ValueChanged" />
+    <Publicize Include="Timberborn.TemplateSystem" />
+  </ItemGroup>
+
+</Project>
