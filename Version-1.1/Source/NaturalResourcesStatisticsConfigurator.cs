@@ -9,6 +9,7 @@ namespace Calloatti.NaturalResourcesStatistics
     protected override void Configure()
     {
       Bind<NaturalResourcesStatisticsTab>().AsSingleton();
+      Bind<PlotHighlightService>().AsSingleton();
       MultiBind<BatchControlModule>().ToProvider<BatchControlModuleProvider>().AsSingleton();
     }
 

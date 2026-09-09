@@ -11,6 +11,7 @@ using Timberborn.Growing;
 using Timberborn.Localization;
 using Timberborn.NaturalResources;
 using Timberborn.NaturalResourcesLifecycle;
+using Timberborn.Planting;
 using Timberborn.SelectionSystem;
 using Timberborn.SingletonSystem;
 using Timberborn.TerrainSystem;
@@ -33,6 +34,9 @@ namespace Calloatti.NaturalResourcesStatistics
     private readonly FilterDropdownProvider _filterProvider;
     private readonly AreaHighlightingService _areaHighlightingService;
     private readonly UISoundController _uiSoundController;
+    private readonly PlantingService _plantingService;
+    private readonly TemplateNameMapper _templateNameMapper;
+    private readonly PlotHighlightService _plotHighlightService;
 
     private readonly Dictionary<string, VisualElement> _rowRoots = new Dictionary<string, VisualElement>();
     private string _selectedTemplateName;
@@ -51,7 +55,10 @@ namespace Calloatti.NaturalResourcesStatistics
         ILoc loc,
         ITooltipRegistrar tooltipRegistrar,
         AreaHighlightingService areaHighlightingService,
-        UISoundController uiSoundController)
+        UISoundController uiSoundController,
+        PlantingService plantingService,
+        TemplateNameMapper templateNameMapper,
+        PlotHighlightService plotHighlightService)
         : base(visualElementLoader, batchControlDistrict, eventBus)
     {
       _visualElementLoader = visualElementLoader;
@@ -62,10 +69,24 @@ namespace Calloatti.NaturalResourcesStatistics
       _filterProvider = new FilterDropdownProvider(this, loc);
       _areaHighlightingService = areaHighlightingService;
       _uiSoundController = uiSoundController;
+      _plantingService = plantingService;
+      _templateNameMapper = templateNameMapper;
+      _plotHighlightService = plotHighlightService;
     }
 
     [OnEvent]
     public void OnSelectableObjectUnselected(SelectableObjectUnselectedEvent evt)
+    {
+      ClearHighlight();
+    }
+
+    [OnEvent]
+    public void OnBatchControlBoxHidden(BatchControlBoxHiddenEvent evt)
+    {
+      ClearHighlight();
+    }
+
+    public override void Hide()
     {
       ClearHighlight();
     }
@@ -78,11 +99,21 @@ namespace Calloatti.NaturalResourcesStatistics
       }
       _selectedTemplateName = null;
       _areaHighlightingService.UnhighlightAll();
+      _plotHighlightService.Clear();
     }
 
     public override IEnumerable<BatchControlRowGroup> GetRowGroups(IEnumerable<EntityComponent> entities)
     {
       _rowRoots.Clear();
+
+      string filter = _filterProvider.GetValue();
+
+      if (filter == "Plots")
+      {
+        foreach (var group in GetPlotRowGroups())
+          yield return group;
+        yield break;
+      }
 
       var naturalResources = entities
           .Where(e => e.GetComponent<NaturalResource>() != null)
@@ -151,6 +182,68 @@ namespace Calloatti.NaturalResourcesStatistics
       yield return rowGroup;
     }
 
+    private IEnumerable<BatchControlRowGroup> GetPlotRowGroups()
+    {
+      var headerRow = CreatePlotsHeader();
+      var rowGroup = _rowGroupFactory.CreateUnsorted(headerRow);
+
+      var plotItems = new List<PlotSpeciesData>();
+
+      foreach (var coord in _plantingService.PlantingCoordinates)
+      {
+        string templateName = _plantingService.GetResourceAt(coord);
+        if (string.IsNullOrEmpty(templateName)) continue;
+
+        var existing = plotItems.FirstOrDefault(p => p.TemplateName == templateName);
+        if (existing != null)
+        {
+          existing.Coordinates.Add(coord);
+        }
+        else
+        {
+          string displayName = "";
+          Sprite icon = null;
+
+          if (_templateNameMapper.TryGetTemplate(templateName, out var templateSpec))
+          {
+            var labeledSpec = templateSpec.Blueprint.GetSpec<LabeledEntitySpec>();
+            if (labeledSpec != null)
+            {
+              displayName = _loc.T(labeledSpec.DisplayNameLocKey);
+              icon = labeledSpec.Icon.Asset;
+            }
+          }
+
+          if (string.IsNullOrEmpty(displayName)) displayName = templateName;
+
+          plotItems.Add(new PlotSpeciesData(templateName, displayName, icon, new List<Vector3Int> { coord }));
+        }
+      }
+
+      plotItems = ApplySort(plotItems);
+
+      foreach (var item in plotItems)
+      {
+        VisualElement rowRoot = _visualElementLoader.LoadVisualElement("Game/BatchControl/BatchControlRow");
+
+        IBatchControlRowItem iconItem = CreatePlotsIcon(item, rowRoot);
+        IBatchControlRowItem nameLabel = CreateSpeciesName(item.DisplayName);
+        IBatchControlRowItem countLabel = CreateLabel(item.Coordinates.Count.ToString(), TextAnchor.MiddleRight, 60, FontStyle.Bold);
+
+        BatchControlRow row = new BatchControlRow(rowRoot, (EntityComponent)null, iconItem, nameLabel, countLabel);
+        rowGroup.AddRow(row);
+
+        _rowRoots[item.TemplateName] = rowRoot;
+
+        if (item.TemplateName == _selectedTemplateName)
+        {
+          rowRoot.EnableInClassList("batch-control-box__row--highlighted", true);
+        }
+      }
+
+      yield return rowGroup;
+    }
+
     private IBatchControlRowItem CreateSpeciesIcon(SpeciesData item, VisualElement rowRoot)
     {
       VisualElement visualElement = _visualElementLoader.LoadVisualElement("Game/BatchControl/BuildingBatchControlRowItem");
@@ -173,6 +266,7 @@ namespace Calloatti.NaturalResourcesStatistics
         rowRoot.EnableInClassList("batch-control-box__row--highlighted", true);
         _selectedTemplateName = item.TemplateName;
 
+        _plotHighlightService.Clear();
         _areaHighlightingService.UnhighlightAll();
         string filter = _filterProvider.GetValue();
         foreach (var entity in item.Entities)
@@ -187,6 +281,35 @@ namespace Calloatti.NaturalResourcesStatistics
           _areaHighlightingService.AddForHighlight(blockObject);
         }
         _areaHighlightingService.Highlight();
+      });
+
+      return new SimpleRowItem(visualElement);
+    }
+
+    private IBatchControlRowItem CreatePlotsIcon(PlotSpeciesData item, VisualElement rowRoot)
+    {
+      VisualElement visualElement = _visualElementLoader.LoadVisualElement("Game/BatchControl/BuildingBatchControlRowItem");
+      visualElement.Q<VisualElement>("ConstructionWrapper").ToggleDisplayStyle(false);
+      visualElement.Q<VisualElement>("PausableWrapper").ToggleDisplayStyle(false);
+      visualElement.Q<VisualElement>("DistanceWrapper").ToggleDisplayStyle(false);
+
+      Image image = visualElement.Q<Image>("Image");
+      image.sprite = item.Icon;
+
+      visualElement.Q<Button>("Select").RegisterCallback<ClickEvent>(evt =>
+      {
+        _uiSoundController.PlayClickSound();
+
+        if (_selectedTemplateName != null && _rowRoots.TryGetValue(_selectedTemplateName, out var prevRoot))
+        {
+          prevRoot.EnableInClassList("batch-control-box__row--highlighted", false);
+        }
+
+        rowRoot.EnableInClassList("batch-control-box__row--highlighted", true);
+        _selectedTemplateName = item.TemplateName;
+
+        _areaHighlightingService.UnhighlightAll();
+        _plotHighlightService.SetHighlightedTiles(item.Coordinates);
       });
 
       return new SimpleRowItem(visualElement);
@@ -263,6 +386,11 @@ namespace Calloatti.NaturalResourcesStatistics
       return items.OrderBy(x => x.DisplayName).ToList();
     }
 
+    private List<PlotSpeciesData> ApplySort(List<PlotSpeciesData> items)
+    {
+      return items.OrderBy(x => x.DisplayName).ToList();
+    }
+
     private BatchControlRow CreateHeader()
     {
       var headerElement = _visualElementLoader.LoadVisualElement("Game/BatchControl/BatchControlHeaderRow");
@@ -300,6 +428,35 @@ namespace Calloatti.NaturalResourcesStatistics
       return new BatchControlRow(headerElement);
     }
 
+    private BatchControlRow CreatePlotsHeader()
+    {
+      var headerElement = _visualElementLoader.LoadVisualElement("Game/BatchControl/BatchControlHeaderRow");
+      headerElement.Clear();
+      headerElement.style.justifyContent = Justify.FlexStart;
+      headerElement.style.height = 42;
+
+      var iconSpacer = new VisualElement();
+      iconSpacer.style.width = 38;
+      iconSpacer.style.minWidth = 38;
+      iconSpacer.style.maxWidth = 38;
+      iconSpacer.style.marginLeft = 1;
+      iconSpacer.style.marginRight = 1;
+
+      var nameLabel = new Label(_loc.T("Calloatti.NRS.Header"));
+      nameLabel.style.unityTextAlign = TextAnchor.MiddleLeft;
+      nameLabel.style.flexGrow = 1;
+      nameLabel.style.marginLeft = 4;
+      nameLabel.style.fontSize = 14;
+
+      var countLabel = CreateHeaderLabel(_loc.T("Calloatti.NRS.Column.Plots"));
+
+      headerElement.Add(iconSpacer);
+      headerElement.Add(nameLabel);
+      headerElement.Add(countLabel);
+
+      return new BatchControlRow(headerElement);
+    }
+
     private Label CreateHeaderLabel(string text)
     {
       var label = new Label(text);
@@ -326,6 +483,7 @@ namespace Calloatti.NaturalResourcesStatistics
 
     public void SetFilter(string filter)
     {
+      _plotHighlightService.Clear();
       IsDirty = true;
     }
 
@@ -341,7 +499,7 @@ namespace Calloatti.NaturalResourcesStatistics
       private readonly ILoc _loc;
       private string _selectedValue = "All";
 
-      private static readonly string[] FilterKeys = { "All", "Planted", "Wild" };
+      private static readonly string[] FilterKeys = { "All", "Planted", "Wild", "Plots" };
 
       public FilterDropdownProvider(NaturalResourcesStatisticsTab tab, ILoc loc)
       {
@@ -382,6 +540,22 @@ namespace Calloatti.NaturalResourcesStatistics
         DisplayName = displayName;
         Icon = icon;
         Entities = entities;
+      }
+    }
+
+    private class PlotSpeciesData
+    {
+      public string TemplateName { get; }
+      public string DisplayName { get; }
+      public Sprite Icon { get; }
+      public List<Vector3Int> Coordinates { get; }
+
+      public PlotSpeciesData(string templateName, string displayName, Sprite icon, List<Vector3Int> coordinates)
+      {
+        TemplateName = templateName;
+        DisplayName = displayName;
+        Icon = icon;
+        Coordinates = coordinates;
       }
     }
   }

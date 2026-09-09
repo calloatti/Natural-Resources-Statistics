@@ -1,3 +1,7 @@
+1.0.1
+- Added Plots filter: shows planting assignments grouped by species with tile count
+- Plots row click highlights assigned tiles on the map
+
 1.0.0
 - Initial release
 - Natural Resources Statistics tab in batch control panel

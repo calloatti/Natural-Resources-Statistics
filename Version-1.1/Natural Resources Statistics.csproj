@@ -17,6 +17,7 @@
     <Publicize Include="Timberborn.DropdownSystem" />
     <DoNotPublicize Include="Assembly:Timberborn.DropdownSystem Timberborn.DropdownSystem.Dropdown.ValueChanged" />
     <Publicize Include="Timberborn.TemplateSystem" />
+    <Publicize Include="Timberborn.Planting" />
   </ItemGroup>
 
 </Project>

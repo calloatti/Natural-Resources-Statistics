@@ -1,4 +1,5 @@
-Adds a Natural Resources Statistics tab to the batch control panel showing all trees, bushes, and crops grouped by species with health/growth/planting breakdown. Filter by All, Planted, or Wild: applies to all columns and map highlight. Click a row to highlight matching entities on the map.
+Adds a Natural Resources Statistics tab to the batch control panel showing all trees, bushes, and crops grouped by species with health/growth/planting breakdown. Filter by All, Planted, or Wild: applies to all columns and map highlight. Click a row to highlight matching entities on the map.  
+Also counts plots now.
 
 ---
 
